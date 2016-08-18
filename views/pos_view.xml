@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+        <record model="ir.ui.view" id="view_pos_pos_form">
+            <field name="name">pos.order</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+				<data>
+					<field name="fiscal_position_id" position="after">
+						<field name="type"/>
+					</field>
+					<field name="amount_tax" position="after">
+						<field name="amount_roundoff"/>
+					</field>
+					<xpath expr="//field[@name='tax_ids_after_fiscal_position']" position="replace">
+						<field name="tax_ids_after_fiscal_position" invisible="1"/>
+					</xpath>
+					<xpath expr="//field[@name='tax_ids']" position="replace">
+						<field name="tax_ids" invisible="1"/>
+					</xpath>
+					<xpath expr="//field[@name='price_subtotal']" position="replace">
+						<field name="price_subtotal" invisible="1"/>
+					</xpath>
+					<field name="amount_tax" position="replace">
+						<field name="amount_tax" invisible="1"/>
+					</field>
+<!--
+                    form/sheet/notebook/page/field[@name='lines']/tree
+-->
+		       </data>       
+                    
+            </field>
+        </record>
+
+    </data>
+</openerp>

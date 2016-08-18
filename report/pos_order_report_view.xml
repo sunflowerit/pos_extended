@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="point_of_sale.view_report_pos_order_search" model="ir.ui.view">
+            <field name="name">report.pos.order.search</field>
+            <field name="model">report.pos.order</field>
+            <field name="arch" type="xml">
+                <search string="Point of Sale Analysis">
+                    <field name="date"/>
+                    <filter string="Invoiced" domain="[('state','=',('invoiced'))]"/>
+                    <filter string="Not Invoiced" domain="[('state','=',('paid'))]"/>
+                    <separator/>
+                    <filter string="Year" name="year" domain="[('date','&lt;=', time.strftime('%%Y-12-31')),('date','&gt;=',time.strftime('%%Y-01-01'))]" help="POS ordered created during current year"/>
+                    <filter string="Today" domain="[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                    <separator/>
+                    <filter string="My Sales" help="My Sales" domain="[('user_id','=',uid)]"/>
+                    <separator/>
+                    <filter string="Void/Return Order" domain="[('type','=','return')]"/> 
+                    <separator/>
+                    <field name="config_id"/>
+                    <field name="partner_id"/>
+                    <field name="discount_percentage"/>
+                    <field name="user_id"/>
+                    <field name="product_id"/>
+                    <field name="product_categ_id"/>
+                    <group expand="1" string="Group By">
+                        <filter string="Salesperson" name="User" context="{'group_by':'user_id'}"/>
+                        <filter string="Departmentwise" context="{'group_by':'product_categ_id'}"/>
+                        <filter string="Itemwise" context="{'group_by':'product_id'}"/>
+                        <separator/>
+                        <filter string="Year" context="{'group_by':'date:year'}" help="One Year of order date"/>
+                        <filter string="Order Half Yearly" context="{'group_by':'date:half'}" help="Six  Months of order date"/>
+                        <filter string="Order Quarterly" context="{'group_by':'date:quarter'}" help="Three Months of order date"/>
+                        <filter string="Order Month" context="{'group_by':'date:month'}" help="Month of order date"/>
+                        <filter string="Order 15 Days" context="{'group_by':'date:halfmonth'}" help="Order Within 15 Days"/>
+                        <filter string="Order Two weeks" context="{'group_by':'date:twoweeks'}" help="Order Within Two Weeks"/>
+                        <filter string="Order Week" context="{'group_by':'date:week'}" help="Week of order date"/>
+                        <filter string="Order Day" context="{'group_by':'date:day'}" help="Day of order date"/>
+                        <filter string="Hourly" context="{'group_by':'date:hour'}" help="Hourly"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <record id="point_of_sale.view_report_pos_order_pivot_departmentwise" model="ir.ui.view">
+            <field name="name">report.pos.order.pivot</field>
+            <field name="model">report.pos.order</field>
+            <field name="arch" type="xml">
+                <pivot string="Point of Sale Analysis">
+                    <field name="product_categ_id" type="row"/>
+                    <field name="product_qty" type="measure"/>
+                    <field name="price_total" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <record id="point_of_sale.view_report_pos_order_pivot_itemwise" model="ir.ui.view">
+            <field name="name">report.pos.order.pivot</field>
+            <field name="model">report.pos.order</field>
+            <field name="arch" type="xml">
+                <pivot string="Point of Sale Analysis">
+                    <field name="product_id" type="row"/>
+                    <field name="product_qty" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <record id="point_of_sale.view_report_pos_order_tree_itemwise" model="ir.ui.view">
+            <field name="name">report.pos.order.tree</field>
+            <field name="model">report.pos.order</field>
+            <field name="arch" type="xml">
+                <tree string="Point of Sale Analysis">
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="config_id"/>
+                    <field name="product_categ_id"/>
+                    <field name="product_qty"/>
+                    <field name="price_total"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="point_of_sale.view_report_pos_order_tree_departmentwise" model="ir.ui.view">
+            <field name="name">report.pos.order.tree</field>
+            <field name="model">report.pos.order</field>
+            <field name="arch" type="xml">
+                <tree string="Point of Sale Analysis">
+                    <field name="partner_id"/>
+                    <field name="user_id"/>
+                    <field name="config_id"/>
+                    <field name="product_id"/>
+                    <field name="product_qty"/>
+                    <field name="price_total"/>
+                </tree>
+            </field>
+        </record>
+        
+         <menuitem  name="Orders" id="menu_pos_order_report" parent="point_of_sale.menu_point_rep" sequence="1"/>
+
+        
+         <record id="action_report_pos_order_itemwise_order" model="ir.actions.act_window">
+            <field name="name">ItemWise  Orders</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="context">{'group_by':'product_id'}</field>
+            <field name="domain">[]</field>
+        </record>
+        
+        <record id="action_window_view_report_pos_order_itemwise_order_pivot" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="point_of_sale.view_report_pos_order_pivot_itemwise"/>
+            <field name="act_window_id" ref="action_report_pos_order_itemwise_order"/>
+        </record>
+        
+        <record id="action_window_view_report_pos_order_itemwise_order_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="point_of_sale.view_report_pos_order_tree_itemwise"/>
+            <field name="act_window_id" ref="action_report_pos_order_itemwise_order"/>
+        </record>
+
+        <menuitem  action="action_report_pos_order_itemwise_order" id="menu_report_pos_order_itemwise_order" parent="menu_pos_order_report" sequence="30"/>
+        
+         <record id="action_report_pos_order_departmentwise_order" model="ir.actions.act_window">
+            <field name="name">Department Wise Orders</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{'group_by':'product_categ_id'}</field>
+        </record>
+
+        <menuitem  action="action_report_pos_order_departmentwise_order" id="menu_report_pos_order_departmentwise_order" parent="menu_pos_order_report" sequence="50"/>
+        
+
+         
+         <record id="action_report_pos_order_daywise_order" model="ir.actions.act_window">
+            <field name="name">Daywise  Orders</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{'group_by':'date:day'}</field>
+        </record>
+
+        <menuitem  action="action_report_pos_order_daywise_order" id="menu_report_pos_order_daywise_order" parent="menu_pos_order_report" sequence="40"/>
+        
+        <record id="action_report_pos_order_today" model="ir.actions.act_window">
+            <field name="name">Orders Today</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]</field>
+            <field name="context">{}</field>
+            
+        </record>
+
+        <menuitem  action="action_report_pos_order_today" id="menu_report_pos_order_today" parent="menu_pos_order_report" sequence="40"/>
+
+        <record id="action_report_pos_order_itemwise_order_today" model="ir.actions.act_window">
+            <field name="name">Itemwise Orders Today</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:hour','group_by':'product_id'}</field>
+            
+        </record>
+        
+         <record id="action_window_view_report_pos_order_itemwise_order_today_pivot" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="point_of_sale.view_report_pos_order_pivot_itemwise"/>
+            <field name="act_window_id" ref="action_report_pos_order_itemwise_order_today"/>
+        </record>
+        
+        <record id="action_window_view_report_pos_order_itemwise_order_today_tree" model="ir.actions.act_window.view">
+            <field eval="1" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="point_of_sale.view_report_pos_order_tree_itemwise"/>
+            <field name="act_window_id" ref="action_report_pos_order_itemwise_order_today"/>
+        </record>
+
+        <menuitem  action="action_report_pos_order_itemwise_order_today" id="menu_report_pos_order_itemwise_order_today" parent="menu_pos_order_report" sequence="42"/>
+
+        <record id="action_report_pos_order_itemwise_order_twoweeks" model="ir.actions.act_window">
+            <field name="name">Itemwise Orders Two Weeks</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:twoweeks','group_by':'product_id'}</field>
+        </record>
+
+        <menuitem  action="action_report_pos_order_itemwise_order_twoweeks" id="menu_report_pos_order_itemwise_order_twoweeks" parent="menu_pos_order_report" sequence="42"/>
+
+        <record id="action_report_pos_order_departmentwise_order_today" model="ir.actions.act_window">
+            <field name="name">Departmentwise Orders Today</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:hour','group_by':'product_categ_id'}</field>
+            
+        </record>
+
+        <menuitem  action="action_report_pos_order_departmentwise_order_today" id="menu_report_pos_order_departmentwise_order_today" parent="menu_pos_order_report" sequence="42"/>
+
+        
+         <record id="action_report_pos_order_department_order_twoweeks" model="ir.actions.act_window">
+            <field name="name">Itemwise Orders Two Weeks</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:twoweeks','group_by':'product_categ_id'}</field>
+        </record>
+
+        <menuitem  action="action_report_pos_order_department_order_twoweeks" id="menu_report_pos_order_itemwise_order_twoweeks" parent="menu_pos_order_report" sequence="42"/>
+
+        
+        
+        <record id="action_report_pos_order_hourly_order_today" model="ir.actions.act_window">
+            <field name="name">Hourly  Orders Today</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph,tree</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:hour'}</field>
+        </record>
+        
+        <menuitem  action="action_report_pos_order_hourly_order_today" id="menu_report_pos_order_hourly_order_today" parent="menu_pos_order_report" sequence="40"/>
+
+
+         
+                
+    </data>
+</openerp>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="DiscountAmountButton">
+        <div class='control-button js_discount_amount'>
+            <i class='fa fa-tag' /> Discount Amount
+        </div>
+    </t>
+    
+    <t t-name="DiscountAmount">
+        <div class='control-button js_discount'>
+            <i class='fa fa-tag' /> Discount
+        </div>
+    </t>
+    
+    <t t-name="SubmitOrderButton">
+        <span class="control-button order-submit">
+            <i class="fa fa-cutlery"></i>
+            KOT
+        </span>
+    </t>
+
+</templates>

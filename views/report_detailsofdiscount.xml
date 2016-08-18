@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="point_of_sale.report_detailsofdiscount">
+    <t t-call="report.html_container">
+        <t t-call="report.internal_layout">
+            <div class="page">
+                <h2>Details of Discount</h2>
+
+                <div class="row mt32">
+                    <div class="col-xs-2">
+                        <strong>Company</strong>:<br/>
+                        <span t-esc="res_company.name"/>
+                    </div>
+                    <div class="col-xs-2">
+                        <strong>Users</strong>:<br/>
+                        <span t-esc="get_user_names(data['form']['user_ids']) or 'All'"/>
+                    </div>
+                    <div class="col-xs-3">
+                        <strong>Print Date</strong>:<br/>
+                        <span t-esc="formatLang(time.strftime('%Y-%m-%d'),date=True)"/>
+                    </div>
+                </div>
+                <div class="row mb32">
+                    <div class="col-xs-3">
+                        <strong>Start Period</strong>:<br/>
+                        <span t-esc="formatLang(data['form']['date_start'],date=True)"/> 
+                    </div>
+                    <div class="col-xs-3">
+                        <strong>End Period</strong>:<br/>
+                        <span t-esc="formatLang(data['form']['date_end'],date=True)"/> 
+                    </div>
+                </div>
+
+                
+
+                <table class="table table-condensed">
+                     <thead>
+                        <th><strong>Date</strong></th>
+                        <th><strong>Order</strong></th>
+                        <th><strong>Total</strong></th>
+                        <th><strong>Discount</strong></th>
+                        <th><strong>Disc %</strong></th>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="discount_details(data['form'])" t-as="line_ids">
+                             <td>
+                                <span t-esc="line_ids['date_order']"/>
+                            </td>
+                            <td>
+                                <span t-esc="line_ids['name']"/>
+                            </td>
+                            <td>
+                                <span t-esc="line_ids['total']"/>
+                            </td>
+                            <td>
+                                <span t-esc="formatLang(line_ids['discount'], dp='Sale Price', currency_obj=res_company.currency_id)"/>
+                            </td>
+                            <td>
+                                <span t-esc="line_ids['percent']"/>%
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                 <table class="table table-condensed">
+
+                    <thead>
+                        <th><strong></strong></th>
+                        <th><strong>5%</strong></th>
+                        <th><strong>10%</strong></th>
+                        <th><strong>20%</strong></th>
+                        <th><strong>30%</strong></th>
+                        <th><strong>40%</strong></th>
+                        <th><strong>50%</strong></th>
+                        <th><strong>51-99%</strong></th>
+                        <th><strong>100%</strong></th>
+                        <th><strong>Total</strong></th>
+                    </thead>
+                    <tr>
+                        <td>
+                            <strong>Amount</strong>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscfivepercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdisctenpercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdisctwentypercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscthirtypercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscfortypercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscfiftypercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscninetyninepercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdischundredpercent())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdisc())"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Count</strong>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscfivepercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdisctenpercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdisctwentypercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscthirtypercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscfortypercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscfiftypercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscninetyninepercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdischundredpercentqty())"/>
+                        </td>
+                        <td>
+                            <strong t-esc="formatLang(getsumdiscqty())"/>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </t>
+    </t>
+</template>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+  
+    <report
+            id="action_report_report_detailsofsalestotal"
+            model="pos.details"
+            string="Total Sales"
+            menu="False"
+            report_type="qweb-pdf"
+            name="point_of_sale.report_detailsofsalestotal"
+            file="point_of_sale.report_detailsofsalestotal"
+        />
+        
+        
+    <report
+            id="action_report_report_detailsofdiscount"
+            model="pos.discount.report"
+            string="Total Discount"
+            menu="False"
+            report_type="qweb-pdf"
+            name="point_of_sale.report_detailsofdiscount"
+            file="point_of_sale.report_detailsofdiscount"
+        />
+        
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<openerp>
+    <data>
+    
+        <report
+            id="action_report_kitchen_receipt"
+            string="Kitchen Receipt"
+            model="kitchen.order"
+            report_type="qweb-pdf"
+            name="hsr_pos.report_kitchen_receipt"
+            file="hsr_pos.report_kitchen_receipt"
+            paperformat="point_of_sale.paperformat_posreceipt"
+        />
+        
+         
+
+    </data>
+</openerp>

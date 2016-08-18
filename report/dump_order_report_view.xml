@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+        
+    <menuitem  name="Void/Return Order" id="menu_dump_order_report" parent="point_of_sale.menu_point_rep" sequence="2"/>
+
+         <record id="action_report_pos_order_itemwise_return" model="ir.actions.act_window">
+            <field name="name">ItemWise Void/Return Orders</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="context">{}</field>
+            <field name="domain">[('type','=','return')]</field>
+        </record>
+
+        <menuitem name="Itemwise Void/Return Orders" action="action_report_pos_order_itemwise_return" id="menu_report_pos_order_cancel" parent="menu_dump_order_report" sequence="60"/>
+        
+        <record id="action_report_pos_order_departmentwise_return" model="ir.actions.act_window">
+            <field name="name">Department wise Void/Return Orders</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('type','=','return')]</field>
+            <field name="context">{'group_by':'product_categ_id'}</field>
+        </record>
+
+        <menuitem  action="action_report_pos_order_departmentwise_return" id="menu_report_pos_order_departmentwise_return" parent="menu_dump_order_report" sequence="80"/>
+
+        
+        
+        <record id="action_report_pos_order_daywise_return" model="ir.actions.act_window">
+            <field name="name">Daywise Void/Return Orders</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('type','=','return')]</field>
+            <field name="context">{'group_by':'date:day'}</field>
+        </record>
+
+        <menuitem  action="action_report_pos_order_daywise_return" id="menu_report_pos_order_daywise_return" parent="menu_dump_order_report" sequence="70"/>
+        
+        <record id="action_report_pos_order_return_today" model="ir.actions.act_window">
+            <field name="name">Void Orders Today</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('type','=','return'),('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]</field>
+            <field name="context">{'group_by':'date:day'}</field>
+            
+        </record>
+
+        <menuitem  action="action_report_pos_order_return_today" id="menu_report_pos_order_return_today" parent="menu_dump_order_report" sequence="40"/>
+
+         <record id="action_report_pos_order_hourly_return_today" model="ir.actions.act_window">
+            <field name="name">Hourly  Void Orders Today</field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('type','=','return'),('date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:hour'}</field>
+            
+        </record>
+
+        <menuitem  action="action_report_pos_order_hourly_return_today" id="menu_report_pos_order_return_hourly_return_today" parent="menu_dump_order_report" sequence="40"/>
+
+         <record id="action_report_pos_order_hourly_return_this_month" model="ir.actions.act_window">
+            <field name="name">Hourly  Void Orders 30 Days </field>
+            <field name="res_model">report.pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot,graph</field>
+            <field name="search_view_id" ref="point_of_sale.view_report_pos_order_search"/>
+            <field name="domain">[('type','=','return')]</field>
+            <field name="context">{'group_by':'date:day','group_by':'date:hour'}</field>
+            
+        </record>
+
+        <menuitem  action="action_report_pos_order_hourly_return_this_month" id="menu_report_pos_order_hourly_return_this_month" parent="menu_dump_order_report" sequence="40"/>
+
+                
+    </data>
+</openerp>

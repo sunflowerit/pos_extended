@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <template id="assets" inherit_id="point_of_sale.assets">
+          <xpath expr="." position="inside">
+              <script type="text/javascript" src="/hsr_pos/static/src/js/discount.js"></script>
+              <script type="text/javascript" src="/hsr_pos/static/src/js/discount_amount.js"></script>
+              <script type="text/javascript" src="/hsr_pos/static/src/js/screens.js"></script>
+              <script type="text/javascript" src="/hsr_pos/static/src/js/screens.js"></script>  
+              <link rel="stylesheet" href="/hsr_pos/static/src/css/remove_line_confirm.css" id="pos_remove_line_confirm-stylesheet"/>
+
+          </xpath>
+        </template>
+
+    </data>
+</openerp>
