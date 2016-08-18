@@ -55,5 +55,5 @@
     'installable': True,
     'application': False,
     'auto_install': False,
-    'license': 'OEEL-1',
+    'license': 'OPL-1',
 }
