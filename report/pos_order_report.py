@@ -2,26 +2,24 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from openerp import tools
-from openerp.osv import fields,osv
+from openerp import api, fields, models
 
-class pos_order_report(osv.osv):
+class pos_order_report(models.Model):
     _inherit = "report.pos.order"
 
 
-    _columns = {
-        'type': fields.selection([('order', 'Order'),
-                                   ('return', 'Return')],
-                                  'Order Type', readonly=True, copy=False),
-        'discount_percentage':fields.float('Discount Percent'),
-    }
+    type = fields.Selection([('order', 'Order'),
+                             ('return', 'Return')],
+                            'Order Type', readonly=True, copy=False),
+    discount_percentage = fields.Float('Discount Percent'),
 
-    def init(self, cr):
-        tools.drop_view_if_exists(cr, 'report_pos_order')
-        cr.execute("""
+    @api.model
+    def init(self):
+        tools.drop_view_if_exists(self.env.cr, 'report_pos_order')
+        self.env.cr.execute("""
             create or replace view report_pos_order as (
                 select
                     min(l.id) as id,
-                    s.type as type,
                     count(*) as nbr,
                     s.date_order as date,
                     sum(l.qty * u.factor) as product_qty,
@@ -53,7 +51,7 @@ class pos_order_report(osv.osv):
                     left join pos_session ps on (s.session_id=ps.id)
                     left join pos_config pc on (ps.config_id=pc.id)
                 group by
-                    s.date_order, s.partner_id,s.state, pt.categ_id,s.type,l.discount,
+                    s.date_order, s.partner_id,s.state, pt.categ_id,l.discount,
                     s.user_id,s.location_id,s.company_id,s.sale_journal,s.pricelist_id,s.invoice_id,l.product_id,s.create_date,pt.categ_id,pt.pos_categ_id,p.product_tmpl_id,ps.config_id,pc.stock_location_id
                 having
                     sum(l.qty * u.factor) != 0)""")

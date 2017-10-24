@@ -17,23 +17,23 @@
     'depends' : ['base','sale','point_of_sale','stock','pos_restaurant','pos_discount','account'],
     'data': [
 
-         'sales_report.xml',
-         
-         'wizard/pos_details_total.xml',
-         'wizard/pos_discount.xml',
+         # 'sales_report.xml',
+
+         # 'wizard/pos_details_total.xml',
+         # 'wizard/pos_discount.xml',
         
-         'views/pos_view.xml',
-         'views/kot_view.xml',
-         'views/pos_report.xml',
-         'views/templates.xml',
-         'views/views.xml',
+         # 'views/pos_view.xml',
+         # 'views/kot_view.xml',
+         # 'views/pos_report.xml',
+         # 'views/templates.xml',
+         # 'views/views.xml',
 
          
-         'views/report_kitchen_receipt.xml',
-         'views/report_detailsofsales.xml',
-         'views/report_detailsofdiscount.xml',
-         'views/report_detailsofsalestotal.xml',
-         'views/pos_report.xml',
+         # 'views/report_kitchen_receipt.xml',
+         # 'views/report_detailsofsales.xml',
+         # 'views/report_detailsofdiscount.xml',
+         # 'views/report_detailsofsalestotal.xml',
+         # 'views/pos_report.xml',
          
          
          
