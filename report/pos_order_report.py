@@ -7,11 +7,10 @@ from openerp import api, fields, models
 class pos_order_report(models.Model):
     _inherit = "report.pos.order"
 
-
     type = fields.Selection([('order', 'Order'),
                              ('return', 'Return')],
                             'Order Type', readonly=True, copy=False),
-    discount_percentage = fields.Float('Discount Percent'),
+    discount_percentage = fields.Float('Discount Percent')
 
     @api.model
     def init(self):
